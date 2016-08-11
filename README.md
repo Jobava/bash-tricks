@@ -20,3 +20,11 @@ To get the name of the network interface, first do this:
 sudo lshw -class network | sed -n -e '/[Ww]ireless/,$p' | grep -i "logical name:" | head -n 1 | sed 's/^[ \t]*\(.*\)/\1/' | cut -d' ' -f 3
 ```
 
+Together, these combined make
+
+```bash
+my_wlan=$( sudo lshw -class network | sed -n -e '/[Ww]ireless/,$p' | grep -i "logical name:" | head -n 1 | sed 's/^[ \t]*\(.*\)/\1/' | cut -d' ' -f 3 ); sudo ifconfig | sed -n -e "/$my_wlan/,\$p" | grep inet | head -n 1 | sed 's/^[ \t]*\(.*\)/\1/' | cut -d' ' -f 2
+```
+
+notice a little change made in this place: ```sed -n -e "/$my_wlan/,\$p"``` from single quotes to double-quotes, which requires the escaping of the dollar sign
+
